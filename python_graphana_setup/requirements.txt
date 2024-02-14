@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+prometheus_client
+django
+
+opentelemetry-sdk
+opentelemetry-instrumentation-django
+requests
+
+
+# opentelemetry-distro
+# opentelemetry-api
+# opentelemetry-sdk
+# opentelemetry-instrumentation
+# opentelemetry-instrumentation-django
+# opentelemetry-exporter-otlp
+# opentelemetry-ext-prometheus

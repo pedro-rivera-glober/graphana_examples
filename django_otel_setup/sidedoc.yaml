@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  django_app:
+    build: .
+    container_name: django_app
+    ports:
+      - "8088:8088"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel_collector:4317
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=django_app_service
+    depends_on:
+      - otel_collector
+
+  otel_collector:
+    image: otel/opentelemetry-collector-contrib
+    container_name: otel_collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "4317:4317" # OTLP gRPC receiver
+      - "55681:55681" # OTLP HTTP receiver
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - grafana
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secret # Change this to a secure password

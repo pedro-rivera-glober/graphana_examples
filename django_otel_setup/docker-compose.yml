@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  django_app:
+    build:
+      context: .
+      dockerfile: dj_dockerfile
+    container_name: django_app
+    ports:
+      - "8088:8088"
+    volumes:
+      - "./dummy:/app"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel_collector:4317
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=django_app_service
+    depends_on:
+      - otel_collector
+
+ 
