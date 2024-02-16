@@ -19,4 +19,5 @@ COPY dummy/ /app/
 EXPOSE 8088
 
 # Start server
-CMD ["gunicorn", "--bind", "0.0.0.0:8088", "your_project.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8088", "your_project.wsgi:application"]
+CMD ["python", "manage.py", "runserver" , "0.0.0.0:8088"]
